@@ -3,6 +3,7 @@ const express = require("express");
 
 //express
 const app = express();
+const mongoose = require("mongoose");
 const projectRoutes = require("./routes/projectRoute");
 
 //port
@@ -18,7 +19,16 @@ app.use((req, res, next) => {
 //routes
 app.use("/api/projects", projectRoutes);
 
-// listen for reqs
-app.listen(port, () => {
-  console.log(`listening on port ${port}`);
-});
+//mongoDb
+mongoose.set("strictQuery", false);
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    // listen for reqs
+    app.listen(port, () => {
+      console.log(`connected to mongo and listening on port ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
