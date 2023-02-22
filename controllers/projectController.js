@@ -3,7 +3,7 @@ const Project = require("../models/projectModel");
 
 //get all projects
 const getAllProjects = async (req, res) => {
-  const projects = await Project.find({});
+  const projects = await Project.find({}).sort({ createdAt: -1 });
 
   res.status(200).json(projects);
 };
@@ -35,7 +35,7 @@ const postProject = async (req, res) => {
 
     res.status(200).json(project);
   } catch (err) {
-    res.status(400).json({ error: err.messege });
+    res.status(400).json({ error: err.message });
   }
 };
 
